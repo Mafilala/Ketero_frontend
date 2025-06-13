@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 const BaseUrl = "https://ketero-db.onrender.com"
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, context: { params: { id: string } }) {
   try {
-    const orderId = params.id;
+    const orderId = context.params.id;
     const { status_id } = await req.json();
     
     if (!orderId || !status_id) {
