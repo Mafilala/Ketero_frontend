@@ -10,19 +10,18 @@ import { ClothingType } from "@/types/types";
 
 const ClothingTypeSelector = ({ 
   clothingTypes, 
-  selectedClothingType, 
   setSelectedClothingType,
+  clothingTypeName
   }:
   {
   clothingTypes: ClothingType[]; 
-  selectedClothingType: string;
-  setSelectedClothingType: (value: string) => void;
+  setSelectedClothingType: (value: number) => void;
   clothingTypeName: string;
 }) => (
   <div className="mb-8 w-1/2">
     <h3 className="text-lg font-medium text-gray-900 mb-4">Clothing Type</h3>
     <div className="grid grid-cols-1 gap-4">
-        <Select value={selectedClothingType} onValueChange={setSelectedClothingType}>
+        <Select value={clothingTypeName} onValueChange={(val) => setSelectedClothingType(Number(val))}>
           <SelectTrigger className="w-full rounded">
             <SelectValue placeholder="Select a clothing type" />
           </SelectTrigger>

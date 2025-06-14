@@ -21,10 +21,14 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
 
   // Fetch orders from API
   console.log(filter);                       
-  const { data: orders = [] , isLoading: isOrdersLoading, isError: isOrderError } = usePaginatedData(page, PAGE_SIZE, filter)
-    // clients
-  console.log(orders)
-  const { data: clients = [], isLoading: isClientsLoading, isError: isClientError } = useQuery<Client[]>({
+  const {
+  data: { orders = [], total = 0 } = {},
+  isLoading: isOrdersLoading,
+  isError: isOrderError,
+} = usePaginatedData(page, PAGE_SIZE, filter);
+
+  // clients
+    const { data: clients = [], isLoading: isClientsLoading, isError: isClientError } = useQuery<Client[]>({
     queryKey: ['clients'],
     queryFn: () => fetch('/api/clients').then(res => res.json()),
   });
@@ -132,7 +136,7 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
           <tr><td>unable to load table</td></tr>
           ) : (
             // Orders data
-            orders.orders.map((order : Order) => (
+            orders.map((order : Order) => (
               <tr key={order.id} className="border-t hover:bg-gray-50">
                 <td className="p-4">
                   <div className="font-medium">{getClientName(order.client_id)}</div>
@@ -176,7 +180,7 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
               Prev
             </Button>
               <span className="px-2 my-auto">{page + 1}</span>
-            <Button className="rounded bg-gray-300 h-6" onClick={() => setPage(p => (p * PAGE_SIZE < orders?.total ? p + 1 : p))} disabled={(page + 1) * PAGE_SIZE >= orders?.total}>
+            <Button className="rounded bg-gray-300 h-6" onClick={() => setPage(p => (p * PAGE_SIZE < total ? p + 1 : p))} disabled={(page + 1) * PAGE_SIZE >= total}>
               Next
             </Button>
           </div>

@@ -12,7 +12,7 @@ import OrderDetails from "./order_detail";
 const TailorOrderSystem = () => {
   const [customerName, setCustomerName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [selectedClothingType, setSelectedClothingType] = useState("");
+  const [selectedClothingType, setSelectedClothingType] = useState<number | null>(null);
   const [clothingTypeName, setClothingTypeName] = useState("");
   const [parts, setParts] = useState<Part[]>([]);
   const [orderNote, setOrderNote] = useState("");
@@ -41,12 +41,12 @@ const TailorOrderSystem = () => {
         .then(res => res.json()),
     enabled: !!selectedClothingType,
   });
-
-  // Fetch measures for each clothing part
+  
+    // Fetch measures for each clothing part
   useEffect(() => {
     if (clothingParts.length > 0) {
       const fetchMeasuresForParts = async () => {
-        const partsWithMeasures: Part[] = await Promise.all(
+        const partsWithMeasures = await Promise.all(
           clothingParts.map(async (part) => {
             const measures: Measure[] = await fetch(
               `/api/clothing_measures?clothingId=${part.id}`
@@ -55,7 +55,7 @@ const TailorOrderSystem = () => {
             return {
               clothingId: part.id,
               name: part.name,
-              measures: measures.map(m => ({ ...m, value: "" })),
+              measures: measures.map(m => ({ ...m })),
             };
           })
         );
@@ -81,7 +81,7 @@ const TailorOrderSystem = () => {
   const handleMeasureChange = (partIndex: number, measureIndex: number, value: string) => {
     setParts(prev => {
       const newParts = [...prev];
-      newParts[partIndex].measures[measureIndex].value = value;
+      newParts[partIndex].measures[measureIndex].value = parseInt(value);
       return newParts;
     });
   };
@@ -163,9 +163,9 @@ const TailorOrderSystem = () => {
     const orderMeasures = parts.flatMap(part => 
       part.measures.map(measure => ({
         order_id: parseInt(orderId),
-        clothing_id: parseInt(part.clothingId),
-        measure_id: parseInt(measure.id),
-        measure: parseInt(measure.value)
+        clothing_id: part.clothingId,
+        measure_id: measure.id,
+        measure: measure.value
       }))
     );
       const measureResponse = await fetch('/api/order_measure', {
@@ -190,7 +190,7 @@ const TailorOrderSystem = () => {
   const handleReset = () => {
     setCustomerName("");
     setPhoneNumber("");
-    setSelectedClothingType("");
+    setSelectedClothingType(null);
     setClothingTypeName("");
     setParts([]);
     setOrderNote("");
@@ -239,7 +239,6 @@ const TailorOrderSystem = () => {
               
               <ClothingTypeSelector 
                 clothingTypes={clothingTypes}
-                selectedClothingType={selectedClothingType}
                 setSelectedClothingType={setSelectedClothingType}
                 clothingTypeName={clothingTypeName}
               />

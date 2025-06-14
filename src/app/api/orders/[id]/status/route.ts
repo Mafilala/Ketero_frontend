@@ -1,10 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 const BaseUrl = "https://ketero-db.onrender.com"
-export async function PATCH(req: NextRequest, context: { params: { id: string } }) {
+import axios from "axios";
+
+
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse>{
   try {
-    const orderId = context.params.id;
+    const {id: orderId} = await params;
     const { status_id } = await req.json();
-    
+
     if (!orderId || !status_id) {
       return NextResponse.json(
         { error: "Order ID and status are required" },
@@ -12,30 +18,26 @@ export async function PATCH(req: NextRequest, context: { params: { id: string } 
       );
     }
 
-    // Send request to backend
-    const response = await fetch(`${BaseUrl}/order/${orderId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status_id })
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      return NextResponse.json(
-        { error: errorData.message || "Failed to update order status" },
-        { status: response.status }
-      );
-    }
+    const { data } = await axios.patch(
+      `${BaseUrl}/order/${orderId}`,
+      { status_id },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     return NextResponse.json(
-      { message: "Status updated successfully" },
+      { message: "Status updated successfully", data },
       { status: 200 }
     );
-  } catch (error) {
-    console.error("Status update error:", error);
+  } catch  {
     return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
+      {
+        error:  "Internal server error",
+      },
+      { status:  500 }
     );
   }
 }

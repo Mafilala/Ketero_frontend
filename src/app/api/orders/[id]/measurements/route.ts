@@ -1,73 +1,64 @@
 import { NextRequest, NextResponse } from 'next/server';
+import axios from 'axios';
 const BASE_URL = `https://ketero-db.onrender.com/order-measure`;
 
-export async function GET(req: NextRequest, context: { params: { id: string } }) {
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse>{
   try {
-    const orderId = context.params.id;
-    const res = await fetch(`${BASE_URL}/${orderId}`, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+   const { id } = await params; 
+    const { data } = await axios.get(`${BASE_URL}/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-        if (!res.ok) {
-          return NextResponse.json({ error: 'Failed to fetch measures' }, { status: res.status });
-        }
-
-        const measures = await res.json();
-        return NextResponse.json(measures);
-  } catch (error) {
-        return NextResponse.json({ error: 'Server error', detail: (error as Error).message }, { status: 500 });
-      }
+    return NextResponse.json(data);
+  } catch  {
+    return NextResponse.json(
+      { error: "Server error" },
+      { status: 500 }
+    );
   }
-
-
+}
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-    try {
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse>{
+  try {
     const reqObj = await req.json();
-    const orderId = params.id;
+    const {id: orderId} = await params;
 
-    // Validation
-    console.log(reqObj, orderId)
     if (!orderId || !reqObj) {
-      console.log("missing fields", orderId)
+      console.log("missing fields", orderId);
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
       );
     }
 
-    // Forward to backend service
-    const backendResponse = await fetch(
+    const { data } = await axios.put(
       `${BASE_URL}/${orderId}/`,
+      reqObj,
       {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(reqObj),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       }
     );
 
-    if (!backendResponse.ok) {
-      const errorData = await backendResponse.json();
-      console.log(errorData)
-      return NextResponse.json(
-        { error: errorData.message || "Backend update failed" },
-        { status: backendResponse.status }
-      );
-    }
-
     return NextResponse.json(
-      { message: "Measurements updated successfully" },
+      { message: "Measurements updated successfully", data },
       { status: 200 }
     );
-  } catch (error) {
-    console.error("Measurement update error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
+  } catch {
+      return NextResponse.json(
+      {
+        error:  "Internal server error",
+      },
+      { status:  500 }
     );
   }
 }
