@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation} from '@tanstack/react-query';
 import ClientInformation from './ClientInformation';
 import OrderSpecifications from './OrderSpecifications';
 import MeasurementsTable from './MeasurementsTable';
@@ -17,7 +17,6 @@ interface OrderDetailsModalProps {
 }
 
 const OrderDetailsModal = ({ order, clothingTypeName, open, client, onOpenChange }: OrderDetailsModalProps) => {
-  const queryClient = useQueryClient();
   const [editingPartId, setEditingPartId] = useState<number | null>(null);
   const [editedValues, setEditedValues] = useState<Record<number, number>>({});
 

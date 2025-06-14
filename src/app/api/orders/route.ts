@@ -69,17 +69,8 @@ export async function GET(req: NextRequest) {
 
     const { data } = await axios.get(BASE_URL, { params });
     return NextResponse.json(data);
-  } catch (error: any) {
-    console.error("Order fetch error:", error);
-
-    if (axios.isAxiosError(error)) {
-      return NextResponse.json(
-        { error: error.response?.data?.error || 'Failed to fetch orders' },
-        { status: error.response?.status || 500 }
-      );
-    }
-
-    return NextResponse.json(
+  } catch  {
+       return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
     );

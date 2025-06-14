@@ -12,8 +12,8 @@ const ClothingTypeSelector = ({
   clothingTypes, 
   selectedClothingType, 
   setSelectedClothingType,
-  clothingTypeName
-}: {
+  }:
+  {
   clothingTypes: ClothingType[]; 
   selectedClothingType: string;
   setSelectedClothingType: (value: string) => void;
@@ -28,7 +28,7 @@ const ClothingTypeSelector = ({
           </SelectTrigger>
           <SelectContent className="bg-gray-50 z-10 rounded">
             {clothingTypes.map((type) => (
-              <SelectItem key={type.id} value={type.id}>
+              <SelectItem key={type.id} value={String(type.id)}>
                 {type.name}
               </SelectItem>
             ))}
