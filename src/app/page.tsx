@@ -17,8 +17,7 @@ export default function HomePage() {
 
     tg.ready()
     tg.expand()
-    console.log("ready")
-   }
+    }
 
     const fetchClients = async () => {
       try {

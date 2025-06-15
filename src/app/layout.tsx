@@ -23,7 +23,7 @@ export default function RootLayout({
         /> }
       </head>
       <body
-        className="border rounded-lg h-screen">
+        className="border rounded-lg w-full">
         <Providers>
           {children}
 
