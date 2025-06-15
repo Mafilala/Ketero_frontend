@@ -108,7 +108,10 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
   const currentClient = (!isLoading && currentClientId) ? getClient() : null;
   const isError = isOrderError || isClientError || isClothingTypeError;
   return (
-    <div className="">
+    <div className="" style={{
+      backgroundColor: 'var(--tg-bg-color)',
+      color: 'var(--tg-text-color)'
+    }}>
         <table className="w-full border rounded-lg overflow-hidden">
         <thead className="bg-gray-100">
           <tr>
@@ -159,11 +162,18 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
                         setOpen(true)
   
                       }}
-
+                      style={{
+                          backgroundColor: 'var(--tg-button-color)',
+                          color: 'var(--tg-button-text-color)'}}
                     >
                     View
                   </Button>
-                  <Button variant="destructive" size="sm" onClick={() => handleArchive(order.id, order.status_id)}>
+                  <Button variant="destructive" size="sm" onClick={() => handleArchive(order.id, order.status_id)}
+                      style={{
+                          backgroundColor: 'var(--tg-button-color)',
+                          color: 'var(--tg-button-text-color)'}}
+
+                      >
                    {filter === "6" ? "Restore" : "Archive"} 
                   </Button>
                 </td>

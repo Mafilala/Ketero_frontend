@@ -19,9 +19,7 @@ export default function useTelegramTheme() {
       root.setProperty('--tg-button-color', theme.button_color ?? '#2ea6ff');
       root.setProperty('--tg-button-text-color', theme.button_text_color ?? '#ffffff');
 
-      // Now safe to show alert
-      tg.showAlert(JSON.stringify(theme, null, 2));
-    }
+      }
   }, []);
 }
 

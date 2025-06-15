@@ -4,7 +4,7 @@ import TailorOrderSystem from '@/components/registration/main_registration';
 
  const KeeperPage = () => { 
   return (
-    <div className="h-full"> 
+    <div className="w-full"> 
      <TailorOrderSystem /> 
     </div>
   );
