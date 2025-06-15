@@ -1,5 +1,5 @@
 'use client'
-import { useState  } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -9,6 +9,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Client, ClothingType, Order } from '@/types/types'
 import OrderDetailsModal from './OrderDetailsModal';
 import { usePaginatedData } from '@/lib/fetch';
+import { useTelegram } from '@/lib/telegram';
+import useTelegramTheme from '@/lib/theme';
 
 const PAGE_SIZE = 10
 
@@ -18,9 +20,21 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
   const [page, setPage] = useState(0)
   const [filter, setFilter] = useState(defaultFilter);
   const [checked, setChecked] = useState(false);
+    
+  const tg = useTelegram();
+  const theme = useTelegramTheme()
+ 
+  useEffect(() => {
+    
+    if (tg) { 
+
+    tg.ready()
+    tg.expand()
+    }
+
+  }, [tg, theme])
 
   // Fetch orders from API
-  console.log(filter);                       
   const {
   data: { orders = [], total = 0 } = {},
   isLoading: isOrdersLoading,
