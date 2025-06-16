@@ -23,11 +23,13 @@ export function ActionButton(props: buttonInterface) {
   return (
     <div className="inline-flex rounded-md shadow-sm max-w-14">
       { isDefault ? (
-          <Button onClick={handleView} className="rounded-r-none"
+          <Button onClick={handleView} className = "px-1 rounded"
+ 
           style={{
             backgroundColor: 'var(--tg-button-color)',
             color: 'var(--tg-button-text-color)'
           }}
+
         >
             View 
           </Button>
@@ -37,13 +39,13 @@ export function ActionButton(props: buttonInterface) {
             backgroundColor: 'red',
             color: 'var(--tg-button-text-color)'
           }}
-
+            className = "px-1 rounded"
         >
             {filter === "6" ? "Restore" : "Archive"} 
         </Button>
       )
       }
-      <Button variant="secondary" className="rounded-l-none px-0  border-l" onClick={() => setIsDefault(prev => !prev)}
+      <Button variant="secondary" className="rounded-l-none px-0  " onClick={() => setIsDefault(prev => !prev)}
         style={{
             backgroundColor: 'var(--tg-secondary-bg-color)',
             color: 'var(--tg-hint-color)'

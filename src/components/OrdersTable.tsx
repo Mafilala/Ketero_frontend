@@ -124,7 +124,7 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
   const currentClient = (!isLoading && currentClientId) ? getClient() : null;
   const isError = isOrderError || isClientError || isClothingTypeError;
   return (
-    <div className="" style={{
+    <div style={{
       backgroundColor: 'var(--tg-bg-color)',
       color: 'var(--tg-text-color)'
     }}>
@@ -155,8 +155,15 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
           <tr><td>unable to load table</td></tr>
           ) : (
             // Orders data
-            orders.map((order : Order) => (
-              <tr key={order.id} className="border-t hover:bg-gray-50">
+            orders.map((order : Order, index) => (
+              <tr key={order.id} className=" hover:bg-gray-50"
+                  style={{
+                      backgroundColor: index % 2 === 0 ? 'var(--tg-bg-color)' : 'var--tg-secondary-bg-color',
+                      color: 'var(--tg-text-color)',
+                      borderBottom: 'none' // extra precaution
+                    }}
+                    
+                  >
                 <td className="p-4">
                   <div className="font-medium">{getClientName(order.client_id)}</div>
                     <a href={`tel:${getClientPhoneNumber(order.client_id)}`} className="text-sm text-gray-500 hover:underline">
