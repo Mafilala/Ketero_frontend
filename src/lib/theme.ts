@@ -18,7 +18,9 @@ export default function useTelegramTheme() {
       root.setProperty('--tg-text-color', theme.text_color ?? '#000000');
       root.setProperty('--tg-button-color', theme.button_color ?? '#2ea6ff');
       root.setProperty('--tg-button-text-color', theme.button_text_color ?? '#ffffff');
-
+      root.setProperty('--tg-hint-color', theme.hint_color ?? '#707579');
+      root.setProperty('--tg-link-color', theme.link_color ?? '#3390ec');
+      root.setProperty('--tg-secondary-bg-color', theme.secondary_bg_color ?? '##f4f4f5');
       }
   }, []);
 }

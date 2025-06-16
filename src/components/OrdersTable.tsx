@@ -11,6 +11,7 @@ import OrderDetailsModal from './OrderDetailsModal';
 import useTelegramTheme from '@/lib/theme';
 import { useTelegram } from '@/lib/telegram';
 import { usePaginatedData } from '@/lib/fetch';
+import { ActionButton } from './buttons/tableActionTable';
 
 const PAGE_SIZE = 10
 
@@ -126,13 +127,13 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
       backgroundColor: 'var(--tg-bg-color)',
       color: 'var(--tg-text-color)'
     }}>
-        <table className="w-full border rounded-lg overflow-hidden">
-        <thead className="bg-gray-100">
+        <table className="w-full  overflow-hidden">
+        <thead className="">
           <tr>
-            <th className="text-left p-4">Name</th>
-            <th className="text-left p-4">Clothing Type</th>
-            <th className="text-center p-4">Status</th>
-            <th className="text-center p-4">Actions</th>
+            <th className="text-left px-4">ስም </th>
+            <th className="text-left px-4"> አይነት </th>
+            <th className="text-center px-4">Status</th>
+            <th className="text-center px-4">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -170,26 +171,8 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
                   />
                 </td>
                 <td className="p-4 text-center">
-                  <Button variant="outline" size="sm" className="mr-2"
-                    onClick={ () => {
-                        setCurrentClientId(order.client_id)
-                        setOpen(true)
-  
-                      }}
-                      style={{
-                          backgroundColor: 'var(--tg-button-color)',
-                          color: 'var(--tg-button-text-color)'}}
-                    >
-                    View
-                  </Button>
-                  <Button variant="destructive" size="sm" onClick={() => handleArchive(order.id, order.status_id)}
-                      style={{
-                          backgroundColor: 'var(--tg-button-color)',
-                          color: 'var(--tg-button-text-color)'}}
-
-                      >
-                   {filter === "6" ? "Restore" : "Archive"} 
-                  </Button>
+                  <ActionButton setOpen={setOpen} setClientId={setCurrentClientId} filter={filter} clientId={order.client_id} 
+                        handleArchive={() => {handleArchive(order.id, order.status_id)}} />
                 </td>
                   {currentClient &&<OrderDetailsModal open={open} clothingTypeName={getClothingType(order.clothing_type_id)} order={order} onOpenChange={onOpenChange} client={currentClient}/> }
               </tr>
