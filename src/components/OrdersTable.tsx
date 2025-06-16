@@ -1,5 +1,9 @@
 'use client'
+<<<<<<< HEAD
 import { useState, useEffect  } from 'react';
+=======
+import { useState, useEffect } from 'react';
+>>>>>>> 58397c0c6a063c33711492c8128fe167318803dd
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -11,7 +15,12 @@ import OrderDetailsModal from './OrderDetailsModal';
 import useTelegramTheme from '@/lib/theme';
 import { useTelegram } from '@/lib/telegram';
 import { usePaginatedData } from '@/lib/fetch';
+<<<<<<< HEAD
 import { ActionButton } from './buttons/tableActionTable';
+=======
+import { useTelegram } from '@/lib/telegram';
+import useTelegramTheme from '@/lib/theme';
+>>>>>>> 58397c0c6a063c33711492c8128fe167318803dd
 
 const PAGE_SIZE = 10
 
@@ -21,6 +30,10 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
   const [page, setPage] = useState(0)
   const [filter, setFilter] = useState(defaultFilter);
   const [checked, setChecked] = useState(false);
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 58397c0c6a063c33711492c8128fe167318803dd
   const tg = useTelegram();
   const theme = useTelegramTheme()
  
@@ -35,7 +48,6 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
   }, [tg, theme])
 
   // Fetch orders from API
-  console.log(filter);                       
   const {
   data: { orders = [], total = 0 } = {},
   isLoading: isOrdersLoading,
