@@ -121,8 +121,9 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
 
     
   const isLoading = isClientsLoading || isOrdersLoading || isClothingTypeLoading;
-  const currentClient = (!isLoading && currentClientId) ? getClient() : null;
   const isError = isOrderError || isClientError || isClothingTypeError;
+  const currentClient = (!isLoading && currentClientId && !isError) ? getClient() : null;
+
   return (
     <div style={{
       backgroundColor: 'var(--tg-bg-color)',
@@ -166,7 +167,7 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
                   >
                 <td className="p-4">
                   <div className="font-medium">{getClientName(order.client_id)}</div>
-                    <a href={`tel:${getClientPhoneNumber(order.client_id)}`} className="text-sm text-gray-500 hover:underline">
+                    <a href={`tel:${getClientPhoneNumber(order.client_id)}`} className="text-sm">
                       {getClientPhoneNumber(order.client_id)}
                     </a>
                 </td>

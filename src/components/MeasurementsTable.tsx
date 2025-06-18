@@ -27,7 +27,13 @@ export default function MeasurementsTable({
   isSaving
 }: MeasurementsTableProps) {
   return (
-    <Card className="">
+    <Card className=""
+      style={{
+      backgroundColor: 'var(--tg-secondary-bg-color)',
+      color: 'var(--tg-text-color)',
+      borderColor: 'var(--tg-secondary-bg-color)'
+      }}
+    >
       <CardHeader>
         <CardTitle>
           Measurements
@@ -47,7 +53,13 @@ export default function MeasurementsTable({
           <TableBody>
             {measurements.flatMap((part, partIndex) => [
               ...part.measures.map((measure, measureIndex) => (
-                <TableRow key={`${part.clothingId}-${measure.id}`}>
+                <TableRow key={`${part.clothingId}-${measure.id}`}
+                    style={{
+                      backgroundColor: measureIndex % 2 === 0 ? 'var(--tg-bg-color)' : 'var--tg-secondary-bg-color',
+                      color: 'var(--tg-text-color)',
+                      borderBottom: 'none'                     }}
+
+                  >
                   <TableCell>
                     {measureIndex === 0 ? part.name : ''}
                   </TableCell>
@@ -59,7 +71,7 @@ export default function MeasurementsTable({
                         type="text"
                         value={editedValues[measure.id]}
                         onChange={(e) => onValueChange(measure.id.toString(), e.target.value)}
-                        className="w-32"
+                        className=""
                       />
                     ) : (
                       measure.value
@@ -104,7 +116,10 @@ export default function MeasurementsTable({
               // Separator row
               <TableRow 
                 key={`separator-${partIndex}`}
-                className="border-b border-gray-200 h-2"
+                className="border-b  h-2"
+                  style={{
+                  backgroundColor: 'var(--tg-secondary-bg-color)'
+                }}
               >
                 <TableCell colSpan={4} className="p-0"></TableCell>
               </TableRow>

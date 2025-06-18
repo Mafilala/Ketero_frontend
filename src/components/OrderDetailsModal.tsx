@@ -103,7 +103,9 @@ const OrderDetailsModal = ({ order, clothingTypeName, open, client, onOpenChange
       setEditingPartId(null);
     },
   });
-
+  
+  const isSaving = updateMutation.isPending;
+  
   // Helper functions
   const getClothingName = (clothingId: number) => {
     return clothingTypes.find(t => t.id === clothingId)?.name || '';
@@ -187,7 +189,7 @@ const OrderDetailsModal = ({ order, clothingTypeName, open, client, onOpenChange
               onStartEdit={startEditing}
               onSaveEdit={saveEdits}
               onCancelEdit={cancelEditing}
-              isSaving={false}
+              isSaving={isSaving}
             />
           </div>
         )}

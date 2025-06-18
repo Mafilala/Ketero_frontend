@@ -17,7 +17,8 @@ export default function OrderSpecifications({
     <Card className=""
       style={{
       backgroundColor: 'var(--tg-secondary-bg-color)',
-      color: 'var(--tg-text-color)'
+      color: 'var(--tg-text-color)',
+      borderColor: 'var(--tg-secondary-bg-color)'
     }}
     > 
       <CardHeader>
@@ -25,33 +26,33 @@ export default function OrderSpecifications({
       </CardHeader>
       <CardContent className="grid grid-cols-3 gap-4">
         <div>
-          <p className="text-sm text-gray-500">Clothing Type</p>
+          <p className="text-sm underline underline-offset-4 mb-2">አይነት</p>
           <p>{clothingTypeName || 'N/A'}</p>
         </div>
         <div>
-          <p className="text-sm text-gray-500">Style</p>
+          <p className="text-sm underline underline-offset-4 mb-2">ስታይል</p>
           <p>{orderDetail?.style || 'N/A'}</p>
         </div>
         <div>
-          <p className="text-sm text-gray-500">Fabric</p>
+          <p className="text-sm underline underline-offset-4 mb-2">ጨርቅ</p>
           <p>{orderDetail?.fabric || 'N/A'}</p>
         </div>
         <div>
-          <p className="text-sm text-gray-500">Color</p>
+          <p className="text-sm underline underline-offset-4 mb-2">ከለር</p>
           <p>{orderDetail?.color || 'N/A'}</p>
         </div>
         <div>
-          <p className="text-sm text-gray-500">Due Date</p>
+          <p className="text-sm underline underline-offset-4 mb-2">ቀጠሮ</p>
           <p>{order.due_date ? new Date(order.due_date).toLocaleDateString() : 'N/A'}</p>
         </div>
         <div>
-          <p className="text-sm text-gray-500">Status</p>
+          <p className="text-sm underline underline-offset-4 mb-2">ሁኔታ</p>
           <p>{order.status_id === 2 ? 'Delivered' : 'Pending'}</p>
         </div>
         {order?.order_note && (
           <div className="col-span-3">
-            <p className="text-sm text-gray-500">Additional Notes</p>
-            <p className="mt-1 bg-gray-50 p-3 rounded-md">{order.order_note}</p>
+            <p className="text-sm underline underline-offset-4 mb-2">ማስታወሻ</p>
+            <p className="mt-1  rounded-md">{order.order_note}</p>
           </div>
         )} 
       </CardContent>
