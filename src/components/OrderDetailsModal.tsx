@@ -57,7 +57,7 @@ const OrderDetailsModal = ({ order, clothingTypeName, open, client, onOpenChange
         
         const measure: Measure = {
           id: measureId,
-          name: getMeasureName(measureId) || "",
+          name: getMeasureName(measureId),
           value: item.measure
         };
         
@@ -70,14 +70,14 @@ const OrderDetailsModal = ({ order, clothingTypeName, open, client, onOpenChange
       
       return Array.from(partsMap, ([clothingId, measures]) => ({
         clothingId: clothingId,
-        name: getClothingName(clothingId) || "",
+        name: getClothingName(clothingId),
         measures
       }));
 
     },
     enabled: open,
   });
-
+  
   // Update mutation
   const updateMutation = useMutation({
     mutationFn: async (part: Part) => {
@@ -103,7 +103,7 @@ const OrderDetailsModal = ({ order, clothingTypeName, open, client, onOpenChange
 
   // Helper functions
   const getClothingName = (clothingId: number) => {
-    return clothingTypes.find(t => t.id === clothingId)?.name || '';
+    return clothingTypes.find(t => t.id === clothingId)?.name;
   };
 
   const getMeasureName = (measureId: number) => {
@@ -143,7 +143,12 @@ const OrderDetailsModal = ({ order, clothingTypeName, open, client, onOpenChange
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl bg-gray-300 max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-3xl  max-h-[90vh] overflow-y-auto"
+          style={{
+          backgroundColor: 'var(--tg-bg-color)',
+          color: 'var(--tg-text-color)'
+          }}
+      >
         <DialogHeader>
           <DialogTitle>Order #{order.id} Details</DialogTitle>
         </DialogHeader>

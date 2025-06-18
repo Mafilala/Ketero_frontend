@@ -37,6 +37,7 @@ export interface Order {
   client_id: number;
   clothing_type_id: number;
   due_date: string;
+  order_note: string;
   status_id: number;
   created_at: string;
 }

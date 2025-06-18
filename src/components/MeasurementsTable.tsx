@@ -2,6 +2,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Part } from '@/types/types';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
 interface MeasurementsTableProps {
   measurements: Part[];
@@ -14,6 +15,7 @@ interface MeasurementsTableProps {
   isSaving: boolean;
 }
 
+
 export default function MeasurementsTable({
   measurements,
   editingPartId,
@@ -25,9 +27,13 @@ export default function MeasurementsTable({
   isSaving
 }: MeasurementsTableProps) {
   return (
-    <div className="border rounded-lg p-4">
-      <h3 className="font-medium mb-3">Measurements</h3>
-      
+    <Card className="">
+      <CardHeader>
+        <CardTitle>
+          Measurements
+        </CardTitle>
+      </CardHeader>
+      <CardContent> 
       {measurements.length > 0 ? (
         <Table>
           <TableHeader>
@@ -35,7 +41,7 @@ export default function MeasurementsTable({
               <TableHead>Part</TableHead>
               <TableHead>Measure</TableHead>
               <TableHead>Value</TableHead>
-              <TableHead className="w-32">Actions</TableHead>
+              <TableHead >Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -59,7 +65,7 @@ export default function MeasurementsTable({
                       measure.value
                     )}
                   </TableCell>
-                  <TableCell className="text-center">
+                  <TableCell className="text-start">
                     {measureIndex === 0 && editingPartId !== part.clothingId && (
                       <Button
                         size="sm"
@@ -110,6 +116,7 @@ export default function MeasurementsTable({
           No measurements recorded for this order
         </div>
       )}
-    </div>
+      </CardContent>
+    </Card>
   );
 }

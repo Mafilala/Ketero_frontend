@@ -1,4 +1,5 @@
 import { Order, OrderDetail } from '@/types/types';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
 interface OrderSpecificationsProps {
   clothingTypeName: string;
@@ -11,10 +12,18 @@ export default function OrderSpecifications({
   orderDetail,
   order
 }: OrderSpecificationsProps) {
+  console.log("spec", order)
   return (
-    <div className="border rounded-lg p-4">
-      <h3 className="font-medium mb-3">Order Specifications</h3>
-      <div className="grid grid-cols-3 gap-4">
+    <Card className=""
+      style={{
+      backgroundColor: 'var(--tg-secondary-bg-color)',
+      color: 'var(--tg-text-color)'
+    }}
+    > 
+      <CardHeader>
+        <CardTitle>Order Specifications</CardTitle>
+      </CardHeader>
+      <CardContent className="grid grid-cols-3 gap-4">
         <div>
           <p className="text-sm text-gray-500">Clothing Type</p>
           <p>{clothingTypeName || 'N/A'}</p>
@@ -39,13 +48,13 @@ export default function OrderSpecifications({
           <p className="text-sm text-gray-500">Status</p>
           <p>{order.status_id === 2 ? 'Delivered' : 'Pending'}</p>
         </div>
-{/*        {orderDetail?.notes && (
+        {order?.order_note && (
           <div className="col-span-3">
             <p className="text-sm text-gray-500">Additional Notes</p>
-            <p className="mt-1 bg-gray-50 p-3 rounded-md">{orderDetail.notes}</p>
+            <p className="mt-1 bg-gray-50 p-3 rounded-md">{order.order_note}</p>
           </div>
-        )} */}
-      </div>
-    </div>
+        )} 
+      </CardContent>
+    </Card>
   );
 }
