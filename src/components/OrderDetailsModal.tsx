@@ -24,6 +24,7 @@ const OrderDetailsModal = ({ order, clothingTypeName, open, client, onOpenChange
   const { data: clothingTypes = [], isLoading: isClothingLoading } = useQuery<ClothingType[]>({
     queryKey: ['clothingTypes'],
     queryFn: () => fetch('/api/clothing').then(res => res.json()),
+    enabled: open
   });
 
   // Fetch measure types
@@ -42,6 +43,8 @@ const OrderDetailsModal = ({ order, clothingTypeName, open, client, onOpenChange
   });
 
   // Fetch measurements
+  const isReady = open && !isClothingLoading && !isMeasureLoading;
+
   const { data: measurements = [], isLoading: isMeasurementsLoading } = useQuery<Part[]>({
     queryKey: ['measurements', order.id],
     queryFn: async () => {
@@ -70,12 +73,12 @@ const OrderDetailsModal = ({ order, clothingTypeName, open, client, onOpenChange
       
       return Array.from(partsMap, ([clothingId, measures]) => ({
         clothingId: clothingId,
-        name: getClothingName(clothingId),
+        name: getClothingName(clothingId) || "",
         measures
       }));
 
     },
-    enabled: open,
+    enabled: isReady,
   });
   
   // Update mutation
@@ -103,7 +106,7 @@ const OrderDetailsModal = ({ order, clothingTypeName, open, client, onOpenChange
 
   // Helper functions
   const getClothingName = (clothingId: number) => {
-    return clothingTypes.find(t => t.id === clothingId)?.name;
+    return clothingTypes.find(t => t.id === clothingId)?.name || '';
   };
 
   const getMeasureName = (measureId: number) => {
