@@ -7,6 +7,7 @@ import ClientInformation from './ClientInformation';
 import OrderSpecifications from './OrderSpecifications';
 import MeasurementsTable from './MeasurementsTable';
 import { Order, Client, ClothingType, MeasureType, OrderDetail, Part, Measure, MeasureResponse } from '@/types/types';
+import PriceCard from './PriceCard';
 
 interface OrderDetailsModalProps {
   order: Order;
@@ -19,7 +20,7 @@ interface OrderDetailsModalProps {
 const OrderDetailsModal = ({ order, clothingTypeName, open, client, onOpenChange }: OrderDetailsModalProps) => {
   const [editingPartId, setEditingPartId] = useState<number | null>(null);
   const [editedValues, setEditedValues] = useState<Record<number, number>>({});
-
+  
   // Fetch clothing types
   const { data: clothingTypes = [], isLoading: isClothingLoading } = useQuery<ClothingType[]>({
     queryKey: ['clothingTypes'],
@@ -51,7 +52,6 @@ const OrderDetailsModal = ({ order, clothingTypeName, open, client, onOpenChange
       const res = await fetch(`/api/orders/${order.id}/measurements`);
       const measurementData: MeasureResponse[] = await res.json();
       
-      // Transform to Part[] format
       const partsMap = new Map<number, Measure[]>();
       
       measurementData.forEach(item => {
@@ -145,13 +145,13 @@ const OrderDetailsModal = ({ order, clothingTypeName, open, client, onOpenChange
 
   // Loading state
   const isLoading = isClothingLoading || isMeasureLoading || isDetailLoading || isMeasurementsLoading;
-
-  return (
+    return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl  max-h-[90vh] overflow-y-auto"
           style={{
           backgroundColor: 'var(--tg-bg-color)',
-          color: 'var(--tg-text-color)'
+          color: 'var(--tg-text-color)',
+          borderColor: 'var(--tg-secondary-bg-color)'
           }}
       >
         <DialogHeader>
@@ -174,6 +174,7 @@ const OrderDetailsModal = ({ order, clothingTypeName, open, client, onOpenChange
         ) : (
           <div className="space-y-6">
             <ClientInformation client={client} />
+            <PriceCard order_id={order.id}/>
             
             <OrderSpecifications 
               clothingTypeName={clothingTypeName}

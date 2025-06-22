@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-const BaseUrl = "https://ketero-db.onrender.com"
 import axios from "axios";
+const BaseUrl = process.env.BACKEND_URL;
+ 
 
 
 export async function PATCH(

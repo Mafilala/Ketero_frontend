@@ -1,12 +1,9 @@
 'use client'
-
 import { useState, useEffect  } from 'react';
-
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from "@/components/ui/label";
-
 import { Skeleton } from '@/components/ui/skeleton';
 import { Client, ClothingType, Order } from '@/types/types'
 import OrderDetailsModal from './OrderDetailsModal';
@@ -14,7 +11,8 @@ import { usePaginatedData } from '@/lib/fetch';
 import { ActionButton } from './buttons/tableActionTable';
 import { useTelegram } from '@/lib/telegram';
 import useTelegramTheme from '@/lib/theme';
-
+import useToggleOrderStatus from '@/lib/archive';
+import { Loader2Icon } from 'lucide-react';
 const PAGE_SIZE = 10
 
 const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
@@ -23,9 +21,12 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
   const [page, setPage] = useState(0)
   const [filter, setFilter] = useState(defaultFilter);
   const [checked, setChecked] = useState(false);
-  const tg = useTelegram();
-  const theme = useTelegramTheme()
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [checkedOrderId, setCheckedOrderId] = useState<number | null>(null)
  
+  const tg = useTelegram();
+  const theme = useTelegramTheme();
+   
   useEffect(() => {
     
     if (tg) { 
@@ -57,6 +58,12 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
     
   });
 
+  const { mutate: toggleOrderStatus, isPending: isUpdating } = useToggleOrderStatus(page, PAGE_SIZE, filter);
+
+  const handleArchive = (orderId: number, currentStatus: number) => {
+    toggleOrderStatus({ orderId, currentStatus, name:"archive"});
+  };
+
   const handleOncheck = () => {
     setFilter(prev => prev === "" ? "3": "")
     setChecked(prev => !prev)
@@ -67,9 +74,7 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
     return client ? client.full_name : 'Loading...';
   };
   
-  const onOpenChange = (val: boolean) => {
-     setOpen(val)
-  }
+  
   const getClient = () => {
     const client = clients.find(c => c.id === currentClientId)
     return client
@@ -86,40 +91,11 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
   };
   // Toggle order status
   const toggleStatus = async (orderId: number, currentStatus: number) => {
-    try {
-      const newStatus = currentStatus !== 3 ? 3 : 1;       
-      const response = await fetch(`/api/orders/${orderId}/status`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status_id: newStatus })
-      });
-
-      if (!response.ok) throw new Error('Status update failed');
-
-      // Update local state
-      } catch (err) {
-      console.error('Status toggle error:', err);
-      }
+    setCheckedOrderId(orderId)
+    toggleOrderStatus({ orderId, currentStatus, name:"status"});
   };
 
-  const handleArchive = async (orderId: number, currentStatus: number) => {
-    try {
-      const newStatus = currentStatus !== 6 ? 6 : 1;       
-      const response = await fetch(`/api/orders/${orderId}/status`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status_id: newStatus })
-      });
-
-      if (!response.ok) throw new Error('Status update failed');
-
-      // Update local state
-      } catch (err) {
-      console.error('Status toggle error:', err);
-      }
-  };
-
-    
+   
   const isLoading = isClientsLoading || isOrdersLoading || isClothingTypeLoading;
   const isError = isOrderError || isClientError || isClothingTypeError;
   const currentClient = (!isLoading && currentClientId && !isError) ? getClient() : null;
@@ -129,6 +105,16 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
       backgroundColor: 'var(--tg-bg-color)',
       color: 'var(--tg-text-color)'
     }}>
+        {selectedOrder && currentClient && (
+            <OrderDetailsModal
+              open={open}
+              clothingTypeName={getClothingType(selectedOrder.clothing_type_id)}
+              order={selectedOrder}
+              onOpenChange={setOpen}
+              client={currentClient}
+            />
+          )} 
+
         <table className="w-full  overflow-hidden">
         <thead className="">
           <tr>
@@ -156,7 +142,7 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
           <tr><td>unable to load table</td></tr>
           ) : (
             // Orders data
-            orders.map((order : Order, index) => (
+            orders?.map((order : Order, index) => (
               <tr key={order.id} className=" hover:bg-gray-50"
                   style={{
                       backgroundColor: index % 2 === 0 ? 'var(--tg-bg-color)' : 'var--tg-secondary-bg-color',
@@ -172,24 +158,31 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
                     </a>
                 </td>
                 <td className="p-4">{getClothingType(order.clothing_type_id)}</td>
-                <td className="p-4 text-center">
+                <td className="p-4 flex gap-2 justify-center">
                   <Checkbox
                     checked={order.status_id === 3}
                     onCheckedChange={() => toggleStatus(order.id, order.status_id)}
                     className="h-5 w-5"
                   />
+                  {
+                        (isUpdating && checkedOrderId === order.id) && <Loader2Icon className="animate-spin" />
+                  }
                 </td>
                 <td className="p-4 text-center">
-                  <ActionButton setOpen={setOpen} setClientId={setCurrentClientId} filter={filter} clientId={order.client_id} 
-                        handleArchive={() => {handleArchive(order.id, order.status_id)}} />
+                  <ActionButton setOpen={setOpen} setClientId={setCurrentClientId} filter={filter} clientId={order.client_id} isUpdating={isUpdating} 
+                        handleArchive={() => {handleArchive(order.id, order.status_id)}} 
+                        handleOrder={() => setSelectedOrder(order)} 
+                      />
+                       
                 </td>
-                  {currentClient &&<OrderDetailsModal open={open} clothingTypeName={getClothingType(order.clothing_type_id)} order={order} onOpenChange={onOpenChange} client={currentClient}/> }
-              </tr>
+                </tr>
             ))
           )}
         </tbody>
       </table>
-      {(!isError && !isLoading) && 
+      {(!isError && !isLoading) &&
+        <>
+                  
         <div className="flex justify-between  px-4 mt-4">
           <div className=" flex justify-between">
             <Button className="rounded bg-gray-300 h-6" onClick={() => setPage(p => Math.max(p - 1, 1))} disabled={page === 0}>
@@ -209,6 +202,7 @@ const OrdersTable = ({defaultFilter}: {defaultFilter: string}) => {
             )
           }
         </div>
+      </>
       }
       </div>
   );

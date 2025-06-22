@@ -8,6 +8,9 @@ import CustomerInfoForm from "./customer_info";
 import ClothingTypeSelector from "./clothing_type_selector";
 import PartMeasurements from "./part_measurements";
 import OrderDetails from "./order_detail";
+import { Loader2Icon } from "lucide-react"
+import { Button } from '@/components/ui/button';
+
 
 const TailorOrderSystem = () => {
   const [customerName, setCustomerName] = useState("");
@@ -18,7 +21,7 @@ const TailorOrderSystem = () => {
   const [orderNote, setOrderNote] = useState("");
   const [dueDate, setDueDate] = useState<Date | null>(null);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
-
+  const [isSaving, setIsSaving] = useState(false)
   const [style, setStyle] = useState("");
   const [fabric, setFabric] = useState("");
   const [color, setColor] = useState("");
@@ -65,7 +68,7 @@ const TailorOrderSystem = () => {
       
       fetchMeasuresForParts();
     }
-  }, [clothingParts]);
+  }, [clothingParts, selectedClothingType]);
 
   // Set clothing type name when selected
   useEffect(() => {
@@ -89,7 +92,7 @@ const TailorOrderSystem = () => {
   // Submit order
  const handleSubmitOrder = async () => {
   try {
-    // 2. Create client
+    setIsSaving(true)
     const clientResponse = await fetch('/api/clients', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -107,7 +110,6 @@ const TailorOrderSystem = () => {
     const clientData = await clientResponse.json();
     const clientId = clientData.id;
 
-    // 3. Create main order
     const orderResponse = await fetch('/api/orders', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -133,9 +135,9 @@ const TailorOrderSystem = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         order_id: orderId,
-        style: parseInt(style),
-        fabric: parseInt(fabric),
-        color: parseInt(color)
+        style: parseInt(style) || 0,
+        fabric: parseInt(fabric) || 0,
+        color: parseInt(color) || 0
       })
     });
 
@@ -150,8 +152,8 @@ const TailorOrderSystem = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         order_id: orderId,
-        price: parseFloat(price),
-        paid: parseFloat(paid)
+        price: parseFloat(price) || 0,
+        paid: parseFloat(paid) || 0
       })
     });
 
@@ -159,13 +161,13 @@ const TailorOrderSystem = () => {
       const errorData = await priceDetailResponse.json();
       throw new Error(`Price detail creation failed: ${errorData.error || 'Unknown error'}`);
     }
-        // 6. Create order measurements
+
     const orderMeasures = parts.flatMap(part => 
       part.measures.map(measure => ({
         order_id: parseInt(orderId),
         clothing_id: part.clothingId,
         measure_id: measure.id,
-        measure: measure.value
+        measure: measure.value || 0
       }))
     );
       const measureResponse = await fetch('/api/order_measure', {
@@ -180,9 +182,11 @@ const TailorOrderSystem = () => {
 
         
     // 7. Reset form
+    setIsSaving(false)
     handleReset();
     
   } catch  {
+    setIsSaving(false)
     console.log("Order submission error:");
   }
 }; 
@@ -204,13 +208,13 @@ const TailorOrderSystem = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen  py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-extrabold text-gray-900 mb-2">
+          <h1 className="text-4xl font-extrabold">
             Tailor Order Management
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg ">
             Create custom orders with detailed measurements
           </p>
         </div>
@@ -270,25 +274,31 @@ const TailorOrderSystem = () => {
               )}
               
               <div className="flex justify-end pt-4">
-                <button
+                <Button
                   onClick={handleSubmitOrder}
-                  disabled={!customerName || !phoneNumber || !selectedClothingType || parts.length === 0}
-                  className={`px-6 py-3 rounded-lg font-medium ${
-                    customerName && phoneNumber && selectedClothingType && parts.length > 0
-                      ? "bg-indigo-600 hover:bg-indigo-700 text-white"
-                      : "bg-gray-200 text-gray-500 cursor-not-allowed"
-                  } transition duration-200`}
+                  disabled={!customerName || !phoneNumber || !selectedClothingType || parts.length === 0 || !dueDate}
+                  style={{
+                          borderColor: 'var(--tg-secondary-bg-color)',
+                          backgroundColor: 'var(--tg-button-color)',
+                          color: 'var(--tg-button-text-color)'
+
+                  }}
+                  size="lg"
                 >
-                  Create Order
-                </button>
+                  
+                          {isSaving ? (
+                        <>
+                        <Loader2Icon className="animate-spin" />
+                          Creating... 
+                        </>
+                          ) : (
+                            "Create Order"
+                          )}
+                </Button>
               </div>
             </div>
           </div>
         )}
-        
-        <div className="mt-8 text-center text-gray-500 text-sm">
-          <p>© 2023 TailorPro. All measurements are stored securely.</p>
-        </div>
       </div>
     </div>
   );

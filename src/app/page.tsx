@@ -1,13 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Client } from '../types/types';
-import { ClientTable } from '../components/tables/client_table';
+import { useEffect } from 'react';
 import { useTelegram } from '@/lib/telegram';
 import useTelegramTheme from '@/lib/theme';
 export default function HomePage() {
-  const [clients, setClients] = useState<Client[]>([]);
-  const [loading, setLoading] = useState(true);
   const tg = useTelegram();
   const theme = useTelegramTheme()
  
@@ -19,19 +15,6 @@ export default function HomePage() {
     tg.expand()
     }
 
-    const fetchClients = async () => {
-      try {
-        const res = await fetch('/api/clients');
-        const data = await res.json();
-        setClients(data);
-      } catch (err) {
-        console.error('Failed to fetch clients:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchClients();
   }, [tg, theme]);
 
   return (
@@ -41,13 +24,7 @@ export default function HomePage() {
         color: 'var(--tg-text-color)'
       }}
     >
-      <h1 className=""
-              >📋 Client List</h1>
-      {loading ? (
-        <p>Loading clients...</p>
-      ) : (
-        <ClientTable clients={clients} />
-      )}
+      Hello, Good people 
     </div>
   );
 }

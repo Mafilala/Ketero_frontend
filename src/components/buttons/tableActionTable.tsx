@@ -4,23 +4,28 @@
 import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-react"
 import { useState } from "react"
+import { Loader2Icon } from "lucide-react"
 
 interface buttonInterface {
   setClientId: (id: number) => void
   setOpen: (open: boolean) => void
   handleArchive : () => void
   clientId: number
-  filter: string  
+  filter: string
+  handleOrder : () => void
+  isUpdating: boolean
 }
 
 export function ActionButton(props: buttonInterface) {
   const [isDefault, setIsDefault] = useState<boolean>(true);
-  const {clientId, filter, setOpen, setClientId, handleArchive} = props;
+  const {clientId, filter, setOpen, setClientId, handleArchive, handleOrder, isUpdating} = props;
   const handleView = () => {
     setClientId(clientId)
     setOpen(true)
+    handleOrder()
+    
   }
-  return (
+    return (
     <div className="inline-flex rounded-md shadow-sm max-w-14">
       { isDefault ? (
           <Button onClick={handleView} className = "px-1 rounded"
@@ -40,8 +45,15 @@ export function ActionButton(props: buttonInterface) {
             color: 'var(--tg-button-text-color)'
           }}
             className = "px-1 rounded"
-        >
-            {filter === "6" ? "Restore" : "Archive"} 
+        >{isUpdating?(
+            <>
+              <Loader2Icon className="animate-spin" />
+                {filter === "6" ? "Restoring" : "Archiving"}
+            </>
+            ):(
+
+            (filter === "6") ? "Restore" : "Archive")
+         }
         </Button>
       )
       }

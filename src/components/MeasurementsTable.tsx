@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Part } from '@/types/types';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Loader2Icon, X} from "lucide-react"
 
 interface MeasurementsTableProps {
   measurements: Part[];
@@ -71,7 +72,7 @@ export default function MeasurementsTable({
                         type="text"
                         value={editedValues[measure.id]}
                         onChange={(e) => onValueChange(measure.id.toString(), e.target.value)}
-                        className=""
+                        className="w-fit"
                       />
                     ) : (
                       measure.value
@@ -93,21 +94,41 @@ export default function MeasurementsTable({
               // Action row for editing
               editingPartId === part.clothingId && (
                 <TableRow key={`edit-actions-${partIndex}`}>
-                  <TableCell colSpan={3}></TableCell>
-                  <TableCell className="flex justify-center space-x-2">
+                  <TableCell colSpan={2}></TableCell>
+                  <TableCell colSpan={2} className="flex justify-center space-x-2">
                     <Button
                       size="sm"
                       onClick={() => onSaveEdit(part)}
                       disabled={isSaving}
-                    >
-                      {isSaving ? "Saving..." : "Save"}
+                        style={{
+                          borderColor: 'var(--tg-secondary-bg-color)',
+                          backgroundColor: 'var(--tg-button-color)',
+                          color: 'var(--tg-button-text-color)'
+
+                        }}
+
+                        >
+                          {isSaving ? (
+                        <>
+                        <Loader2Icon className="animate-spin" />
+                          Saving...
+                        </>
+                          ) : (
+                            "Save"
+                          )}
                     </Button>
                     <Button
                       size="sm"
-                      variant="outline"
                       onClick={onCancelEdit}
                       disabled={isSaving}
+                      style={{
+                          borderColor: 'var(--tg-secondary-bg-color)',
+                          backgroundColor: 'var(--tg-button-color)',
+                          color: 'var(--tg-button-text-color)'
+
+                        }}
                     >
+                      <X />
                       Cancel
                     </Button>
                   </TableCell>

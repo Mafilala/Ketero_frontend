@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
-const BASE_URL = `https://ketero-db.onrender.com/order-measure`;
+const backendUrl = process.env.BACKEND_URL;
+
+const BASE_URL = `${backendUrl}/order-measure`;
 
 
 export async function GET(

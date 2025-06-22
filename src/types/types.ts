@@ -4,6 +4,12 @@ export type Client = {
   phone_number: string;
 };
 
+export type Price = {
+  order_id: number,
+  price: number,
+  paid: number
+}
+
 export interface ClothingType {
   id: number;
   name: string;

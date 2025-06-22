@@ -1,5 +1,6 @@
 import { Order, OrderDetail } from '@/types/types';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import OrderDetails from './OrderDetail'; 
 
 interface OrderSpecificationsProps {
   clothingTypeName: string;
@@ -7,13 +8,17 @@ interface OrderSpecificationsProps {
   order: Order;
 }
 
+  // fetch price detail
+
+
 export default function OrderSpecifications({ 
   clothingTypeName,
   orderDetail,
   order
 }: OrderSpecificationsProps) {
-  console.log("spec", order)
-  return (
+  
+
+    return (
     <Card className=""
       style={{
       backgroundColor: 'var(--tg-secondary-bg-color)',
@@ -23,32 +28,19 @@ export default function OrderSpecifications({
     > 
       <CardHeader>
         <CardTitle>Order Specifications</CardTitle>
+        <CardTitle className="mt-4">{clothingTypeName || 'N/A'}</CardTitle>
       </CardHeader>
-      <CardContent className="grid grid-cols-3 gap-4">
-        <div>
-          <p className="text-sm underline underline-offset-4 mb-2">አይነት</p>
-          <p>{clothingTypeName || 'N/A'}</p>
+      <CardContent className="space-y-4">
+        {orderDetail && <OrderDetails orderDetail={orderDetail}/>}
+        <div className='flex justify-between'>
+          <div>
+            <p className="">ቀጠሮ: {order.due_date ? new Date(order.due_date).toLocaleDateString() : 'N/A'}</p>
+          </div>
+          <div>
+            <p className="">ሁኔታ: {order.status_id === 2 ? 'Delivered' : 'Pending'}</p>
+          </div>
         </div>
-        <div>
-          <p className="text-sm underline underline-offset-4 mb-2">ስታይል</p>
-          <p>{orderDetail?.style || 'N/A'}</p>
-        </div>
-        <div>
-          <p className="text-sm underline underline-offset-4 mb-2">ጨርቅ</p>
-          <p>{orderDetail?.fabric || 'N/A'}</p>
-        </div>
-        <div>
-          <p className="text-sm underline underline-offset-4 mb-2">ከለር</p>
-          <p>{orderDetail?.color || 'N/A'}</p>
-        </div>
-        <div>
-          <p className="text-sm underline underline-offset-4 mb-2">ቀጠሮ</p>
-          <p>{order.due_date ? new Date(order.due_date).toLocaleDateString() : 'N/A'}</p>
-        </div>
-        <div>
-          <p className="text-sm underline underline-offset-4 mb-2">ሁኔታ</p>
-          <p>{order.status_id === 2 ? 'Delivered' : 'Pending'}</p>
-        </div>
+
         {order?.order_note && (
           <div className="col-span-3">
             <p className="text-sm underline underline-offset-4 mb-2">ማስታወሻ</p>
