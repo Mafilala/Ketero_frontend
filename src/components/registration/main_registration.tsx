@@ -10,9 +10,6 @@ import PartMeasurements from "./part_measurements";
 import OrderDetails from "./order_detail";
 import { Loader2Icon } from "lucide-react"
 import { Button } from '@/components/ui/button';
-import { useTelegram } from "@/lib/telegram";
-import useTelegramTheme from "@/lib/theme";
-
 
 const TailorOrderSystem = () => {
   const [customerName, setCustomerName] = useState("");
@@ -28,20 +25,7 @@ const TailorOrderSystem = () => {
   const [fabric, setFabric] = useState("");
   const [color, setColor] = useState("");
   
-  const tg = useTelegram();
-  const theme = useTelegramTheme()
-   
-  useEffect(() => {
-    
-    if (tg) { 
-
-    tg.ready()
-    tg.expand()
-    }
-
-  }, [tg, theme])
-
-
+  
   // New state for pricing
   const [price, setPrice] = useState("");
   const [paid, setPaid] = useState("");
