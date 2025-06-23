@@ -31,7 +31,7 @@ const ClothingTypeSelector = ({
           <SelectTrigger className="w-full rounded">
             <SelectValue placeholder="Select a clothing type" />
           </SelectTrigger>
-          <SelectContent className="bg-gray-50 z-10 rounded">
+          <SelectContent className=" z-10 rounded">
             {clothingTypes.map((type) => (
               <SelectItem key={type.id} value={String(type.id)}>
                 {type.name}

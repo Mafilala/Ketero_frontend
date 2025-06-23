@@ -45,7 +45,7 @@ const OrderDetails = ({
   const [activeTab, setActiveTab] = useState<"specs" | "pricing">("specs");
   
   return (
-    <Card className="border rounded p-6 bg-white shadow-sm"
+    <Card className="border rounded p-2 shadow-sm"
       style={{
         backgroundColor: 'var(--tg-bg-color)',
         color: 'var(--tg-text-color)'
@@ -127,7 +127,7 @@ const OrderDetails = ({
               id="orderNote"
               value={orderNote}
               onChange={(e) => setOrderNote(e.target.value)}
-              placeholder="Special instructions or notes for the order"
+              placeholder="note..."
               className="min-h-[100px]"
             />
           </div>
@@ -138,8 +138,7 @@ const OrderDetails = ({
             <div>
               <Label htmlFor="price">Total Price</Label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                <Input
+                                <Input
                   id="price"
                   type="number"
                   value={price}
@@ -152,7 +151,6 @@ const OrderDetails = ({
             <div>
               <Label htmlFor="paid">Amount Paid</Label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
                 <Input
                   id="paid"
                   type="number"
@@ -165,25 +163,25 @@ const OrderDetails = ({
             </div>
           </div>
 
-          <div className="bg-blue-50 p-4 rounded-lg">
+          <div className="p-4 rounded-lg">
             <div className="flex justify-between mb-2">
-              <span className="text-gray-600">Balance Due:</span>
+              <span className="">Balance Due:</span>
               <span className="font-medium">
-                ${(parseFloat(price || "0") - parseFloat(paid || "0")).toFixed(2)}
+                {(parseFloat(price || "0") - parseFloat(paid || "0")).toFixed(2)}
               </span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2.5">
+            <div className="w-full rounded-full h-2.5">
               <div 
-                className="bg-green-600 h-2.5 rounded-full" 
+                className="h-2.5 rounded-full" 
                 style={{ 
                   width: `${(parseFloat(paid || "0") / parseFloat(price || "1")) * 100}%`,
                   maxWidth: '100%'
                 }}
               ></div>
             </div>
-            <div className="flex justify-between mt-1 text-sm text-gray-500">
-              <span>Paid: ${parseFloat(paid || "0").toFixed(2)}</span>
-              <span>Total: ${parseFloat(price || "0").toFixed(2)}</span>
+            <div className="flex justify-between mt-1 text-sm ">
+              <span>Paid: {parseFloat(paid || "0").toFixed(2)}</span>
+              <span>Total: {parseFloat(price || "0").toFixed(2)}</span>
             </div>
           </div>
         </div>
