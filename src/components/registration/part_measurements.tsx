@@ -20,7 +20,13 @@ const PartMeasurements = ({
   parts: Part[];
   handleMeasureChange: (partIndex: number, measureIndex: number, value: string) => void;
 }) => (
-    <Card className="mb-6">
+    <Card className="mb-6" 
+      style={{
+        backgroundColor: 'var(--tg-bg-color)',
+        color: 'var(--tg-text-color)'
+      }}
+
+    >
       <CardHeader>
       <CardTitle> Measurement Detail </CardTitle>  
       <CardDescription>Card Description</CardDescription>

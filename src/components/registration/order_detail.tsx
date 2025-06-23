@@ -45,7 +45,13 @@ const OrderDetails = ({
   const [activeTab, setActiveTab] = useState<"specs" | "pricing">("specs");
   
   return (
-    <Card className="border rounded p-6 bg-white shadow-sm">
+    <Card className="border rounded p-6 bg-white shadow-sm"
+      style={{
+        backgroundColor: 'var(--tg-bg-color)',
+        color: 'var(--tg-text-color)'
+      }}
+
+    >
       <div className="flex mb-6 border-b">
         <button
           className={`px-4 py-2 font-medium ${

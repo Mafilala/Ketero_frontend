@@ -10,6 +10,8 @@ import PartMeasurements from "./part_measurements";
 import OrderDetails from "./order_detail";
 import { Loader2Icon } from "lucide-react"
 import { Button } from '@/components/ui/button';
+import { useTelegram } from "@/lib/telegram";
+import useTelegramTheme from "@/lib/theme";
 
 
 const TailorOrderSystem = () => {
@@ -26,6 +28,20 @@ const TailorOrderSystem = () => {
   const [fabric, setFabric] = useState("");
   const [color, setColor] = useState("");
   
+  const tg = useTelegram();
+  const theme = useTelegramTheme()
+   
+  useEffect(() => {
+    
+    if (tg) { 
+
+    tg.ready()
+    tg.expand()
+    }
+
+  }, [tg, theme])
+
+
   // New state for pricing
   const [price, setPrice] = useState("");
   const [paid, setPaid] = useState("");
@@ -208,7 +224,12 @@ const TailorOrderSystem = () => {
   };
 
   return (
-    <div className="min-h-screen  py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen  py-12 px-4 sm:px-6 lg:px-8"
+      style={{
+        backgroundColor: 'var(--tg-bg-color)',
+        color: 'var(--tg-text-color)'
+      }}
+    >
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-extrabold">

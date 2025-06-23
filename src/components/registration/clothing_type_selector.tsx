@@ -18,7 +18,13 @@ const ClothingTypeSelector = ({
   setSelectedClothingType: (value: number) => void;
   clothingTypeName: string;
 }) => (
-  <div className="mb-8 w-1/2">
+  <div className="mb-8 w-1/2"
+    style={{
+        backgroundColor: 'var(--tg-bg-color)',
+        color: 'var(--tg-text-color)'
+      }}
+
+    >
     <h3 className="text-lg font-medium text-gray-900 mb-4">Clothing Type</h3>
     <div className="grid grid-cols-1 gap-4">
         <Select value={clothingTypeName} onValueChange={(val) => setSelectedClothingType(Number(val))}>
