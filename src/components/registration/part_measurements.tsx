@@ -29,7 +29,6 @@ const PartMeasurements = ({
     >
       <CardHeader>
       <CardTitle> Measurement Detail </CardTitle>  
-      <CardDescription>Card Description</CardDescription>
       </CardHeader>
     <CardContent>
         {parts.map((part, partIndex) => (
@@ -38,7 +37,7 @@ const PartMeasurements = ({
             <CardTitle>{part.name}</CardTitle>
           </CardHeader>
           
-          <div className="flex gap-4 mb-4">
+          <div className="flex gap-1 md:gap-4 mb-2">
             {part.measures.map((measure, measureIndex) => (
               <Input
                 key={measure.name}

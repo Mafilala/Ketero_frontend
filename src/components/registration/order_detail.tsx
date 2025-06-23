@@ -47,7 +47,7 @@ const OrderDetails = ({
   return (
     <Card className="border rounded p-2 shadow-sm"
       style={{
-        backgroundColor: 'var(--tg-bg-color)',
+        backgroundColor: 'var(--tg-secondary-bg-color)',
         color: 'var(--tg-text-color)'
       }}
 

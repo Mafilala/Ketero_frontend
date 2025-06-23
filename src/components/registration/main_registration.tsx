@@ -241,7 +241,7 @@ const TailorOrderSystem = () => {
 
             >
             <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-bold text-gray-800">New Order</h2>
+              <h2 className="text-xl font-bold ">New Order</h2>
             </div>
             
             <div className="p-6">

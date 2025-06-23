@@ -25,7 +25,7 @@ const ClothingTypeSelector = ({
       }}
 
     >
-    <h3 className="text-lg font-medium text-gray-900 mb-4">Clothing Type</h3>
+    <h3 className="text-lg font-medium  mb-4">Clothing Type</h3>
     <div className="grid grid-cols-1 gap-4">
         <Select value={clothingTypeName} onValueChange={(val) => setSelectedClothingType(Number(val))}>
           <SelectTrigger className="w-full rounded">
