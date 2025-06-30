@@ -1,4 +1,4 @@
-import { PencilRuler,  Shirt, Ruler, ShoppingBag, LayoutList, Puzzle } from "lucide-react"
+import { PencilRuler,  Shirt, Ruler, ShoppingBag, LayoutList, Puzzle, User } from "lucide-react"
 
 import {
   SidebarMenu,
@@ -37,6 +37,11 @@ const items = [
     title: "Clothing Measures",
     url: "/admin?view=clothing_measures",
     icon: Ruler,
+  },
+  {
+    title: "Users",
+    url: "/admin?view=users",
+    icon: User,
   },
 
 ]

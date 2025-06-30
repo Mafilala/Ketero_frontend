@@ -8,6 +8,7 @@ import MeasureTable from '@/components/measure/measure_table';
 import StatusTable from '@/components/status/status_table';
 import ClothingTypePartsManager from '@/components/clothing_type_parts/clothing_type_parts_table';
 import ClothingMeasuresManager from '@/components/clothing_measures/clothing_measures_table';
+import UserTable from '@/components/shop_keeper/main';
 
 const AdminDashboardContent = () => {
   const searchParams = useSearchParams();
@@ -24,6 +25,7 @@ const AdminDashboardContent = () => {
         {view === 'status' && <StatusTable />}
         {view === 'parts' && <ClothingTypePartsManager />}
         {view === 'clothing_measures' && <ClothingMeasuresManager />}
+        {view === 'users' && <UserTable />}
       </div>
     </div>
   );

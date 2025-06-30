@@ -4,6 +4,20 @@ export type Client = {
   phone_number: string;
 };
 
+export type User = {
+  id: number;
+  telegram_id: number;
+  name: string;
+  role: string;
+}
+
+export type CreateUser = {
+  telegram_id: number | '';
+  name: string;
+  role: string;
+}
+
+
 export type Price = {
   order_id: number,
   price: number,

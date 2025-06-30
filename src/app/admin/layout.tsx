@@ -1,6 +1,8 @@
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
+import AuthWrapper from '@/components/authWrapper/wrapper'
+import { ReactNode } from 'react'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -8,7 +10,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <AppSidebar />
       <main className="flex  w-full">
         <SidebarTrigger />
-        {children}
+        <AuthWrapper>
+          {children} 
+        </AuthWrapper>
       </main>
     </SidebarProvider>
   )
