@@ -18,10 +18,7 @@ export const useCreateUser = () => {
            const url = "/api/shop_keeper"
            return axios.post(url, newUser)
         },
-        onSuccess: (data, variables, context) => {
-        // Boom baby!
-        },
-    })
+       })
 }
 
 export const useDeleteUser = () => {

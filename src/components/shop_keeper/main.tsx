@@ -9,21 +9,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useQueryClient } from "@tanstack/react-query";
 import { useCreateUser, useDeleteUser, useGetAllUsers } from "./hooks";
 import UserRows from "./rows";
 import NewUser from "./newUser";
 import { CreateUser } from "@/types/types";
 
 const UserTable = () => {
-  const queryClient = useQueryClient();
   const [isAddingUser, setIsAddingUser] = useState<boolean>(false); 
   const {data: users = [], isLoading: isUsersLoading, isError: isUsersError} = useGetAllUsers() // Fetch Users   
   const createUserMutation = useCreateUser() // Create user mutation    
   const deleteUserMutation = useDeleteUser()  // Delete mutation
-
   
   return (
     <div className="border rounded-lg overflow-hidden">

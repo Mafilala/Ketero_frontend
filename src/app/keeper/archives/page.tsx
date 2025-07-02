@@ -1,3 +1,4 @@
+'use client'
 import OrdersTable from '@/components/OrdersTable';
 
 const OrdersPage = () => {

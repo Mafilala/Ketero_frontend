@@ -9,6 +9,7 @@ import StatusTable from '@/components/status/status_table';
 import ClothingTypePartsManager from '@/components/clothing_type_parts/clothing_type_parts_table';
 import ClothingMeasuresManager from '@/components/clothing_measures/clothing_measures_table';
 import UserTable from '@/components/shop_keeper/main';
+import AuthWrapper from '@/components/authWrapper/wrapper';
 
 const AdminDashboardContent = () => {
   const searchParams = useSearchParams();
@@ -34,7 +35,9 @@ const AdminDashboardContent = () => {
 export default function AdminPage() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <AdminDashboardContent />
+      <AuthWrapper>
+        <AdminDashboardContent />
+      </AuthWrapper>
     </Suspense>
   );
 }

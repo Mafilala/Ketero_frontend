@@ -35,7 +35,7 @@ const NewUser = ({ handleAdd, isPending, handleAddUserState, isSuccess }: NewUse
     if (isSuccess) {
       handleAddUserState()
     }
-  }, [isSuccess])
+  }, [isSuccess, handleAddUserState])
 
   return (
     <div className="space-y-2">

@@ -1,8 +1,9 @@
 'use client';
-import {useEffect} from 'react'
+import {Suspense, useEffect} from 'react'
 import TailorOrderSystem from '@/components/registration/main_registration';
 import { useTelegram } from '@/lib/telegram';
 import useTelegramTheme from '@/lib/theme';
+import AuthWrapper from '@/components/authWrapper/wrapper';
 
  const KeeperPage = () => {
   const tg = useTelegram();
@@ -26,8 +27,12 @@ import useTelegramTheme from '@/lib/theme';
         color: 'var(--tg-text-color)'
       }}
 
-    > 
-     <TailorOrderSystem /> 
+    >
+  <Suspense fallback={<div>Loading...</div>}>
+    <AuthWrapper>
+      <TailorOrderSystem /> 
+    </AuthWrapper>
+  </Suspense>
     </div>
   );
 }
